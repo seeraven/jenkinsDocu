@@ -34,7 +34,7 @@ In order to shutdown Jenkins, we perform the following steps:
 
   - Enable the safe quietdown mode in Jenkins using the Jenkins CLI.
   - Wait until we are sure there are no jobs running on the Jenkins any more.
-  - Stop the Jenkins systemd service.
+  - Stop the Jenkins systemd service or the Jenkins docker container.
 
 
 ### File selection for Backup
@@ -45,3 +45,18 @@ left-overs of jobs. Depending on you setup, it might also be reasonable to
 exclude the `log` and/or `logs` folders.
 
 
+### Encryption
+
+Since the backup will contain the credentials and the master key, anyone with
+access to the backup will be able to decrypt the credentials. Therefore, the
+backup should be treated with the same security concerns as the running server
+instance. In order to be able to store the backup on other (multi-user) machines
+or cloud storages, we encrypt the backup using the openssl enc command.
+
+
+## Backup Script
+
+The backup script [backup.sh](bin/backup.sh) is a simple script to perform the
+backup. It should be started from cron at a regular basis and must be modified
+before using it. Once it is installed, it creates encrypted tar archives
+containing a backup of the jenkins home.
