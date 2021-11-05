@@ -37,8 +37,18 @@ have to do is update the system and the new package is installed.
 
 ## Comparison Matrix
 
-| Topic         | Docker Container      | System Installation    |
-| ------------- | --------------------- | ---------------------- |
-| Installation  | Pulling the image     | Installing the package |
-| Update        | Pulling the new image | Updating the package   |
-| Auto Update   | Must be implemented   | Available by unattended upgrades or similar |
+| Topic               | Docker Container                      | System Installation                                |
+| ------------------- | ------------------------------------- | -------------------------------------------------- |
+| Installation        | Pulling the image                     | Installing the package                             |
+| Update              | Pulling the new image                 | Updating the package                               |
+| Auto Update         | Must be implemented outside container | Available by unattended upgrades or similar method |
+| Access PAM on host  | Possible but requires customization   | Directly accessible                                |
+| Jobs for host tasks | Possible via ssh                      | Directly possible                                  |
+
+
+## Conclusion
+
+If you want an additional level of encapsulation, you can use the Jenkins docker
+container. If on the other hand you want to integrate Jenkins in your host
+infrastructure, it is much easier to use the debian package. From a security
+perspective, there is not much gain in using a docker container for Jenkins.
