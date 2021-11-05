@@ -56,7 +56,7 @@ or cloud storages, we encrypt the backup using the openssl enc command.
 
 ## Backup Script
 
-The backup script [backup.sh](bin/backup.sh) is a simple script to perform the
-backup. It should be started from cron at a regular basis and must be modified
-before using it. Once it is installed, it creates encrypted tar archives
-containing a backup of the jenkins home.
+The backup script [backup.sh](../bin/backup.sh) is a simple script to perform
+the backup. It should be started from cron at a regular basis and must be
+modified before using it. Once it is installed, it creates encrypted tar
+archives containing a backup of the jenkins home.
