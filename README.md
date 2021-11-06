@@ -8,6 +8,7 @@ setup and administer a Jenkins server.
 
   - [Running Jenkins in a docker container or on the host](doc/JENKINS_IN_SYSTEM_OR_DOCKER.md)
   - [Role based Authorization Strategy](doc/ROLE_BASED_AUTHORIZATION.md)
+  - [Authorize Project Plugin](doc/AUTHORIZE_PROJECT_PLUGIN.md)
   - [Notes on Credentials](doc/CREDENTIALS.md)
   - [Safe Backup of Jenkins](doc/BACKUP.md)
 
