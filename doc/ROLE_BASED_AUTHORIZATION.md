@@ -42,13 +42,39 @@ and use only per-project (resp. per-folder) credentials. See also
 
 ## Example Configuration for two Projects
 
+In this configuration, we define the two projects `project1` and `project2` that
+correspond to two root folders. Then we define two developer groups
+`project1developers` and `project2developers` and two user groups
+`project1users` and `project2users`. The example users `developer1`,
+`developer2`, `user1` and `user2` are assigned the corresponding roles to
+ensure the following setup:
+
+  - Developers are able to work in the corresponding project and have full
+    access to managing jobs as well as credentials (which they should limit
+    on the folder scope).
+  - Users are able to run jobs from their corresponding project.
+
+
 ### Configuration under Manage Roles
 
+First the global roles are added. These roles define the base permissions:
+
 ![Manage Roles - Global Roles](images/role_strategy_global_roles.png?raw=true "Global Roles")
+
+Now the per-project roles are defined. The pattern matches the folder name with
+and without a trailing slash:
+
 ![Manage Roles - Item Roles](images/role_strategy_item_roles.png?raw=true "Item Roles")
 
 
 ### Configuration under Assign Roles
 
+The global roles `authenticated` and `anonymous` are assigned to the groups
+`authenticated` and `Anonymous`. These groups are pre-defined groups of the
+plugin. In addition, all administrators are assigned here:
+
 ![Assign Roles - Global Roles](images/role_strategy_assignment_global_roles.png?raw=true "Global Roles")
+
+The item roles define the members of the individual projects:
+
 ![Assign Roles - Item Roles](images/role_strategy_assignment_item_roles.png?raw=true "Item Roles")
