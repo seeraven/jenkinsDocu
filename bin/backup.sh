@@ -115,8 +115,14 @@ function jenkins_finished() {
 # -----------------------------------------------------------------------------
 
 if jenkins_is_active; then
-    wget --quiet -O ${JENKINS_CLI_JAR} ${JENKINS_CLI_JAR_URL}
-    jenkins_cli safe-quiet-down --message "${SHUTDOWN_MESSAGE}" || true
+    if ! wget --quiet -O ${JENKINS_CLI_JAR} ${JENKINS_CLI_JAR_URL}; then
+        cat <<EOF
+ERROR: Can't download Jenkins CLI jar from ${JENKINS_CLI_JAR_URL}!
+EOF
+        rm -rf ${TEMPDIR}
+        exit 1
+    fi
+    jenkins_cli safe-quiet-down --message "${SHUTDOWN_MESSAGE}" &>/dev/null || true
 
     NUM_ATTEMPTS=1
     NUM_FINISHED=0
@@ -159,7 +165,7 @@ if [ -z "${LOCAL_TARGET}" ]; then
     LOCAL_TARGET=${TEMPDIR}
 fi
 
-if ! tar -c -f - -z --exclude=${JENKINS_HOME}/workspace ${JENKINS_HOME} | openssl enc -e -aes256 -salt -iter 100 -pass env:BACKUP_PASSWORD -out ${LOCAL_TARGET}/${BACKUP_ARCHIVE_FILENAME}; then
+if ! tar -c -f - -z --exclude=${JENKINS_HOME}/workspace ${JENKINS_HOME} 2>/dev/null | openssl enc -e -aes256 -salt -iter 100 -pass env:BACKUP_PASSWORD -out ${LOCAL_TARGET}/${BACKUP_ARCHIVE_FILENAME}; then
     cat <<EOF
 ERROR: Can't create encrypted tar archive!
 
@@ -181,7 +187,13 @@ jenkins_start
 # COPY BACKUP
 # -----------------------------------------------------------------------------
 if [ -n "${REMOTE_TARGET}" ]; then
-    rsync -av ${LOCAL_TARGET}/${BACKUP_ARCHIVE_FILENAME} ${REMOTE_TARGET}
+    if ! rsync -av ${LOCAL_TARGET}/${BACKUP_ARCHIVE_FILENAME} ${REMOTE_TARGET} &> /dev/null; then
+        cat <<EOF
+ERROR: Can't copy encrypted backup to ${REMOTE_TARGET}!
+EOF
+        rm -rf ${TEMPDIR}
+        exit 1
+    fi
 fi
 
 
